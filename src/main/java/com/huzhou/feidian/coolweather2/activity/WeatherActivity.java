@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.huzhou.feidian.coolweather2.R;
+import com.huzhou.feidian.coolweather2.service.AutoUpdateService;
 import com.huzhou.feidian.coolweather2.util.HttpCallbackListener;
 import com.huzhou.feidian.coolweather2.util.HttpUtil;
 import com.huzhou.feidian.coolweather2.util.Utility;
@@ -138,5 +139,7 @@ public class WeatherActivity extends AppCompatActivity {
         currentDateText.setText(prefs.getString("current_date",""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }
