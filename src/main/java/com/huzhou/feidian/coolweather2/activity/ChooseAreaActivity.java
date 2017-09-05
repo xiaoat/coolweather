@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -52,12 +53,14 @@ public class ChooseAreaActivity extends AppCompatActivity {
     private Province selectedProvince;
     private City selectedCity;
     private int currentLevel;
+    private boolean isFromWeatherActivity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isFromWeatherActivity = getIntent().getBooleanExtra("from_weather_activity", false);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("city_selected", false)) {
+        if (prefs.getBoolean("city_selected", false) && !isFromWeatherActivity) {
             Intent intent = new Intent(this, WeatherActivity.class);
             startActivity(intent);
             finish();
@@ -206,10 +209,17 @@ public class ChooseAreaActivity extends AppCompatActivity {
 
     public void onBackPressed() {
         if (currentLevel == LEVEL_COUNTY) {
+            Log.d("tt", "finish");
             queryCities();
         } else if (currentLevel == LEVEl_CITY) {
+            Log.d("tt", "finish");
             queryProvinces();
         } else {
+            if (isFromWeatherActivity)  {
+                Intent intent = new Intent(this, WeatherActivity.class);
+                startActivity(intent);
+            }
+            Log.d("tt", "finish");
             finish();
         }
     }
